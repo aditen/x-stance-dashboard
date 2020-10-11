@@ -218,7 +218,7 @@ const StancePage: React.FC = () => {
             </Container>
             {!!openQuestion &&
             <Dialog fullWidth={true} maxWidth={"lg"} open={!!openQuestion} onClose={() => setOpenQuestion(undefined)}>
-                <XStanceQuestion allPredictions={allPredictions} openQuestion={openQuestion}/>
+                <XStanceQuestion modelType={modelType} allPredictions={allPredictions} openQuestion={openQuestion}/>
             </Dialog>}
 
             {showLearningCurve &&
