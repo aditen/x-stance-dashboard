@@ -138,7 +138,7 @@ export class PredictionUtils {
         });
         const most_frequent = Reflect.ownKeys(results).sort((a, b) =>
             (results[b].correct + results[b].wrong) -
-            (results[a].correct + results[a].wrong)).slice(0, 500).sort((a, b) => (
+            (results[a].correct + results[a].wrong)).slice(0, 100).sort((a, b) => (
             results[b].correct / (results[b].correct + results[b].wrong)) -
             (results[a].correct / (results[a].correct + results[a].wrong)));
 

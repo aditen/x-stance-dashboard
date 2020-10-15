@@ -266,7 +266,7 @@ const StancePage: React.FC = () => {
             {showWordCloud &&
             <Dialog maxWidth={"md"} open={showWordCloud}
                     onClose={() => setShowWordCloud(false)}>
-                <DialogTitle>N-Gram Word Cloud</DialogTitle>
+                <DialogTitle>N-Gram Cloud</DialogTitle>
                 <DialogContent>
                     <ReactWordCloud {...wordCloudAttributes}/>
                 </DialogContent>

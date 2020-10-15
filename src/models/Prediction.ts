@@ -11,7 +11,6 @@ export interface Prediction {
     predicted: 'AGAINST' | 'FAVOR';
     fasttext: 'AGAINST' | 'FAVOR';
     mbert: 'AGAINST' | 'FAVOR';
-    attentionMatrix: number[][][]
     // TODO: define correct inline enum
     testSet: string
 }
