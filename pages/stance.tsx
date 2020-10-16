@@ -108,7 +108,6 @@ const StancePage: React.FC = () => {
             setFiguresPerLang(PredictionUtils.figuresByLang(summary.predictions));
             setModelSummary(summary);
             changeFilter(filters, summaries);
-            // await new Promise(r => setTimeout(r, 1000));
             setProgress("finished");
         } catch (e) {
             console.error(e);

@@ -57,11 +57,15 @@ export const XStanceQuestion: React.FC<Props> = (props: Props) => {
             return <Icon style={{color: "red"}}>thumb_down</Icon>;
         } else if (type === "loading") {
             return <CircularProgress/>;
+        } else if (type == "error") {
+            return <span><Icon fontSize={"inherit"} color={"error"}>clear</Icon> Evaluation server offline <Icon
+                fontSize={"inherit"} color={"error"}>clear</Icon></span>
         }
+        return undefined;
     };
 
     useEffect(() => {
-        if (props.modelType === "bow_own_tiny" || props.modelType === "bertrand_small") {
+        if (responseStatus !== "error" && (props.modelType === "bow_own_tiny" || props.modelType === "bertrand_small")) {
             fetchPrediction().catch(console.error);
         }
     }, [customQuestion]);
