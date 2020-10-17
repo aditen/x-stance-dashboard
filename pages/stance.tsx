@@ -60,7 +60,7 @@ nGramMap.set("bow_fasttext", 1);
 
 const StancePage: React.FC = () => {
 
-    const [modelType, setModelType] = useState<ModelType>("bow_own_tiny");
+    const [modelType, setModelType] = useState<ModelType>("bertrand_small");
     const [progress, setProgress] = useState<ProgressType>('loading');
     const [scores, setScores] = useState<Figures>();
     const [allEntries, setAllEntries] = useState<Summary[]>([]);
