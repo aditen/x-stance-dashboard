@@ -14,6 +14,7 @@ import {
 import {TableDataProps} from "../models/TableDataProps";
 import {Summary} from "../models/Summary";
 import {Metric} from "../models/Metric";
+import {PredictionUtils} from "../utils/PredictionUtils";
 
 type Props = {
     metric: Metric,
@@ -24,10 +25,10 @@ type Props = {
     setEntriesToDisplay: (entries: Summary[]) => void,
     page: number,
     setPage: (newPage: number) => void
-    getCurrentScore: (row: Summary) => string
     setOpenQuestion: (row: Summary) => void
 }
 export const XSTanceResultTable: React.FC<Props> = (props: Props) => {
+
     return (<TableContainer component={"table"}>
         <TableHead>
             <TableRow>
@@ -64,7 +65,7 @@ export const XSTanceResultTable: React.FC<Props> = (props: Props) => {
                     </Hidden>
                     <TableCell align="right">{row.question}</TableCell>
                     <TableCell
-                        align="right">{props.getCurrentScore(row)}</TableCell>
+                        align="right">{PredictionUtils.getCurrentScore(row, props.metric)}</TableCell>
                 </TableRow>
             ))}
         </TableBody>

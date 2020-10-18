@@ -2,6 +2,7 @@ import {Figures} from "../models/Figures";
 import {Prediction} from "../models/Prediction";
 import {Summary} from "../models/Summary";
 import {MinMaxPair} from "react-wordcloud";
+import {Metric} from "../models/Metric";
 
 // const sw = require('stopword');
 
@@ -159,5 +160,13 @@ export class PredictionUtils {
             getWordTooltip: (word: any) => `${word.text} (${word.value}) [${(word.quote * 100).toFixed(2) + "%"}]`
         };
         return {"callbacks": callbacks, "options": options, "words": result};
-    }
+    };
+
+    static getCurrentScore = (s: Summary, metric: Metric): string => {
+        if (metric === "accuracy") {
+            return (s.precision * 100).toFixed(2) + "%";
+        } else {
+            return (s.f1Score * 100).toFixed(2) + "%";
+        }
+    };
 }

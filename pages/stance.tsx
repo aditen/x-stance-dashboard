@@ -158,14 +158,6 @@ const StancePage: React.FC = () => {
         setFilters(newProps);
     };
 
-    const getCurrentScore = (s: Summary): string => {
-        if (filters.metric === "accuracy") {
-            return (s.precision * 100).toFixed(2) + "%";
-        } else {
-            return (s.f1Score * 100).toFixed(2) + "%";
-        }
-    };
-
     return (
         <>
             <Head>
@@ -203,16 +195,27 @@ const StancePage: React.FC = () => {
                 {progress !== "finished" &&
                 <Box width={"100%"} textAlign={"center"} margin={2}><CircularProgress/></Box>}
                 {(progress === 'finished' && !!scores) &&
-                <XStanceScore figuresPerLang={figuresPerLang} getCurrentScore={getCurrentScore} metric={filters.metric}
+                <XStanceScore figuresPerLang={figuresPerLang} metric={filters.metric}
                               onSelectLang={(lang) => changeFilter({...filters, lang: lang})}
                               scores={scores}/>}
+                {false && <><Typography variant={"h6"}
+                                        align={"center"}>
+                    new_questions_defr: {PredictionUtils.getFigures(allPredictions.filter(value => value.testSet === "new_questions_defr")).f1Score}
+                </Typography>
+                    <Typography variant={"h6"}
+                                align={"center"}>
+                        new_comments_defr: {PredictionUtils.getFigures(allPredictions.filter(value => value.testSet === "new_comments_defr")).f1Score}
+                    </Typography>
+                    <Typography variant={"h6"}
+                                align={"center"}>
+                        new_topics_defr: {PredictionUtils.getFigures(allPredictions.filter(value => value.testSet === "new_topics_defr")).f1Score}
+                    </Typography></>}
                 {progress === "finished" &&
                 <XStanceFilters filters={filters} changeFilter={changeFilter} availableTopics={availableTopics}/>}
                 {progress === 'finished' &&
                 <XSTanceResultTable metric={filters.metric} filters={filters} changeFilter={changeFilter}
                                     filteredEntries={filteredEntries} entriesToDisplay={entriesToDisplay}
                                     setEntriesToDisplay={setEntriesToDisplay} page={page} setPage={setPage}
-                                    getCurrentScore={getCurrentScore}
                                     setOpenQuestion={setOpenQuestion}/>}
             </Container>
             {!!openQuestion &&

@@ -11,6 +11,5 @@ export interface Prediction {
     predicted: 'AGAINST' | 'FAVOR';
     fasttext: 'AGAINST' | 'FAVOR';
     mbert: 'AGAINST' | 'FAVOR';
-    // TODO: define correct inline enum
-    testSet: string
+    testSet: 'new_comments_it' | 'new_comments_defr' | 'new_questions_it' | 'new_questions_defr' | 'new_topics_it' | 'new_topics_defr'
 }

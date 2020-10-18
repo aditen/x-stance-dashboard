@@ -1,15 +1,14 @@
 import * as React from "react";
 import {Grid, LinearProgress, Typography} from "@material-ui/core";
 import dynamic from "next/dist/next-server/lib/dynamic";
-import {Summary} from "../models/Summary";
 import {Figures} from "../models/Figures";
 import {Metric} from "../models/Metric";
+import {PredictionUtils} from "../utils/PredictionUtils";
 // @ts-ignore
 const ReactCountryFlag: any = dynamic(() => import('react-country-flag'), {ssr: false});
 
 type Props = {
     scores: Figures,
-    getCurrentScore: (s: Summary) => string,
     metric: Metric,
     figuresPerLang: any,
     onSelectLang: (lang: 'all' | 'de' | 'fr' | 'it') => void
@@ -28,7 +27,7 @@ export const XStanceScore: React.FC<Props> = (props: Props) => {
             />
             </Typography>
             <Typography variant={"h6"}
-                        align={"center"}>{props.metric === "accuracy" ? "Accuracy" : "F1 Score"}: {props.getCurrentScore(props.scores as any)}</Typography>
+                        align={"center"}>{props.metric === "accuracy" ? "Accuracy" : "F1 Score"}: {PredictionUtils.getCurrentScore(props.scores as any, props.metric)}</Typography>
             <LinearProgress title={props.metric === "accuracy" ? "Accuracy" : "F1 Score"}
                             style={{height: 20, marginBottom: 20}} variant={"determinate"}
                             value={(props.metric === "accuracy" ? props.scores.precision : props.scores.f1Score) * 100}/>
@@ -45,7 +44,7 @@ export const XStanceScore: React.FC<Props> = (props: Props) => {
                 />
                 </Typography>
                 <Typography variant={"h6"}
-                            align={"center"}>{props.metric === "accuracy" ? "Accuracy" : "F1 Score"}: {props.getCurrentScore(props.figuresPerLang[value])}</Typography>
+                            align={"center"}>{props.metric === "accuracy" ? "Accuracy" : "F1 Score"}: {PredictionUtils.getCurrentScore(props.figuresPerLang[value], props.metric)}</Typography>
                 <LinearProgress title={props.metric === "accuracy" ? "Accuracy" : "F1 Score"}
                                 style={{height: 20, marginBottom: 20}} variant={"determinate"}
                                 value={(props.metric === "accuracy" ? props.figuresPerLang[value].precision : props.figuresPerLang[value].f1Score) * 100}/>

@@ -8,6 +8,9 @@ import {
     DialogContent,
     DialogContentText,
     DialogTitle,
+    ExpansionPanel,
+    ExpansionPanelDetails,
+    ExpansionPanelSummary,
     Icon,
     TableBody,
     TableCell,
@@ -25,6 +28,7 @@ import {ModelType} from "../models/ModelType";
 import IconButton from "@material-ui/core/IconButton";
 import BackendClient from "../http/BackendClient";
 import {Evaluation} from "../models/Evaluation";
+import Pagination from '@material-ui/lab/Pagination';
 
 type Props = {
     modelType: ModelType,
@@ -39,6 +43,7 @@ export const XStanceQuestion: React.FC<Props> = (props: Props) => {
     const [responseStatus, setResponseStatus] = useState<ResultState>("initialized");
     const [evaluation, setEvaluation] = useState<Evaluation | undefined>(undefined);
     const [showAttentionWeight, setShowAttentionWeight] = useState<boolean>(false);
+    const [page, setPage] = useState<number>(1);
 
     const fetchPrediction = async () => {
         if (!!customQuestion && !!customQuestion.comment) {
@@ -71,27 +76,44 @@ export const XStanceQuestion: React.FC<Props> = (props: Props) => {
             child = <span><Icon fontSize={"inherit"} color={"error"}>clear</Icon> Evaluation server offline <Icon
                 fontSize={"inherit"} color={"error"}>clear</Icon></span>
         }
-        return <Typography align={"center"} component={"div"}
-                           style={{marginTop: 20}}>{child}</Typography>;
+        return <>
+            <Typography align={"center"} component={"div"}
+                        style={{marginTop: 20, marginBottom: 5}}>{child}</Typography>
+            {(type === "favor" || type === "against") && <Typography align={"center"} component={"div"}>
+                <IconButton
+                    onClick={() => setShowAttentionWeight(true)}><Icon
+                    fontSize={"inherit"}>dashboard</Icon></IconButton>
+            </Typography>}</>;
     };
 
-    const getAttentionMatrix = (evaluation: Evaluation | undefined) => {
+    const getAttentionMatrix = (evaluation: Evaluation | undefined, pageNumber: number) => {
         if (!evaluation || !evaluation.attnWeights || !evaluation.attnWeights.length) {
             return undefined;
         } else {
             const firstLayerWeights: number[][] = evaluation.attnWeights[1];
             const scalingFactor = evaluation.attnWeights[0].length / 20;
-            return <Box>
-                {firstLayerWeights.slice(0, 50).map((val, i) => <Box height={10}
-                                                                     key={"attn-row-" + i}>{val.slice(0, 50).map((weight, j) =>
-                    <Tooltip title={evaluation.tokens[j] + " -> " + evaluation.tokens[i]}
-                             key={"tip-" + i + "-" + j}><Box style={{
-                        backgroundColor: "blue",
-                        opacity: weight * scalingFactor,
-                        width: 10,
-                        height: 10,
-                        display: "inline-block"
-                    }}/></Tooltip>)}</Box>)}
+            let until = evaluation.tokens.indexOf("<pad>");
+            if (until == -1) {
+                until = evaluation.tokens.length;
+            }
+            return <Box whiteSpace={"nowrap"}>
+                {firstLayerWeights.slice((pageNumber - 1) * 20, Math.min(pageNumber * 20, until)).map((val, i) => <Box
+                    height={10}
+                    key={"attn-row-" + i}>
+                    <Typography component={"div"} variant={"caption"}
+                                style={{
+                                    width: 140,
+                                    display: "inline-block"
+                                }}>{evaluation.tokens[(pageNumber - 1) * 20 + i]}</Typography>
+                    {val.slice(0, until).map((weight, j) =>
+                        <Tooltip title={evaluation.tokens[j] + " -> " + evaluation.tokens[i]}
+                                 key={"tip-" + i + "-" + j}><Box style={{
+                            backgroundColor: "blue",
+                            opacity: weight * scalingFactor,
+                            width: 10,
+                            height: 10,
+                            display: "inline-block"
+                        }}/></Tooltip>)}</Box>)}
             </Box>;
         }
     };
@@ -117,18 +139,25 @@ export const XStanceQuestion: React.FC<Props> = (props: Props) => {
                     />
                 </form>
                 {getResultVis(responseStatus)}
-                <IconButton onClick={() => setShowAttentionWeight(true)}><Icon>dashboard</Icon></IconButton>
-                <div>{!!evaluation && evaluation.tokens.map((token, i) => <Chip
-                    style={{margin: 2}} label={token}
-                    key={"chip-" + i}/>)}</div>
+                <div>{!!evaluation &&
+                <ExpansionPanel><ExpansionPanelSummary><Typography>Tokens</Typography></ExpansionPanelSummary>
+                    <ExpansionPanelDetails style={{display: "block"}}>
+                        {evaluation.tokens.map((token, i) => <Chip
+                            style={{margin: 2}} label={token}
+                            key={"chip-" + i}/>)}
+                    </ExpansionPanelDetails>
+                </ExpansionPanel>}</div>
             </DialogContent>
         </Dialog>}
-        {showAttentionWeight &&
+        {(showAttentionWeight && !!evaluation) &&
         <Dialog maxWidth={"md"} fullWidth={true} open={showAttentionWeight}
                 onClose={() => setShowAttentionWeight(false)}>
             <DialogTitle>Attention Weights</DialogTitle>
             <DialogContent>
-                {getAttentionMatrix(evaluation)}
+                {getAttentionMatrix(evaluation, page)}
+                <Pagination color={"primary"} shape={"rounded"} variant={"outlined"} style={{marginTop: 25}} page={page}
+                            count={Math.ceil(evaluation.tokens.indexOf("<pad>") == -1 ? 128 : evaluation.tokens.indexOf("<pad>") / 20)}
+                            onChange={(e, newPage) => setPage(newPage)}/>
             </DialogContent>
         </Dialog>}
         <DialogTitle>{props.openQuestion.question}</DialogTitle>
