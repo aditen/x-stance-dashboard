@@ -15,6 +15,7 @@ import {
     TableHead,
     TableRow,
     TextField,
+    Tooltip,
     Typography
 } from "@material-ui/core";
 import {PredictionUtils} from "../utils/PredictionUtils";
@@ -37,6 +38,7 @@ export const XStanceQuestion: React.FC<Props> = (props: Props) => {
     const [customQuestion, setCustomQuestion] = useState<Prediction | undefined>(undefined);
     const [responseStatus, setResponseStatus] = useState<ResultState>("initialized");
     const [evaluation, setEvaluation] = useState<Evaluation | undefined>(undefined);
+    const [showAttentionWeight, setShowAttentionWeight] = useState<boolean>(false);
 
     const fetchPrediction = async () => {
         if (!!customQuestion && !!customQuestion.comment) {
@@ -77,21 +79,20 @@ export const XStanceQuestion: React.FC<Props> = (props: Props) => {
         if (!evaluation || !evaluation.attnWeights || !evaluation.attnWeights.length) {
             return undefined;
         } else {
-            console.log(evaluation.attnWeights[0][22][22]);
             const firstLayerWeights: number[][] = evaluation.attnWeights[1];
-            return <Box width={400}>
-                {firstLayerWeights.slice(0, 50).map((val, i) => <Box width={"100%"}
+            const scalingFactor = evaluation.attnWeights[0].length / 20;
+            return <Box>
+                {firstLayerWeights.slice(0, 50).map((val, i) => <Box height={10}
                                                                      key={"attn-row-" + i}>{val.slice(0, 50).map((weight, j) =>
-                    <Box style={{
+                    <Tooltip title={evaluation.tokens[j] + " -> " + evaluation.tokens[i]}
+                             key={"tip-" + i + "-" + j}><Box style={{
                         backgroundColor: "blue",
-                        opacity: weight * evaluation.attnWeights[0].length / 10,
-                        width: 5,
-                        height: 5,
+                        opacity: weight * scalingFactor,
+                        width: 10,
+                        height: 10,
                         display: "inline-block"
-                    }}
-                         key={"box-" + i + "-" + j}/>)}</Box>)}
+                    }}/></Tooltip>)}</Box>)}
             </Box>;
-            //return "conf matrix";
         }
     };
 
@@ -116,10 +117,18 @@ export const XStanceQuestion: React.FC<Props> = (props: Props) => {
                     />
                 </form>
                 {getResultVis(responseStatus)}
-                {getAttentionMatrix(evaluation)}
+                <IconButton onClick={() => setShowAttentionWeight(true)}><Icon>dashboard</Icon></IconButton>
                 <div>{!!evaluation && evaluation.tokens.map((token, i) => <Chip
                     style={{margin: 2}} label={token}
                     key={"chip-" + i}/>)}</div>
+            </DialogContent>
+        </Dialog>}
+        {showAttentionWeight &&
+        <Dialog maxWidth={"md"} fullWidth={true} open={showAttentionWeight}
+                onClose={() => setShowAttentionWeight(false)}>
+            <DialogTitle>Attention Weights</DialogTitle>
+            <DialogContent>
+                {getAttentionMatrix(evaluation)}
             </DialogContent>
         </Dialog>}
         <DialogTitle>{props.openQuestion.question}</DialogTitle>
