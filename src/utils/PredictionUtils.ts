@@ -162,7 +162,7 @@ export class PredictionUtils {
         return {"callbacks": callbacks, "options": options, "words": result};
     };
 
-    static getCurrentScore = (s: Summary, metric: Metric): string => {
+    static getCurrentScore = (s: Figures, metric: Metric): string => {
         if (metric === "accuracy") {
             return (s.precision * 100).toFixed(2) + "%";
         } else {

@@ -195,7 +195,7 @@ const StancePage: React.FC = () => {
                 {progress !== "finished" &&
                 <Box width={"100%"} textAlign={"center"} margin={2}><CircularProgress/></Box>}
                 {(progress === 'finished' && !!scores) &&
-                <XStanceScore figuresPerLang={figuresPerLang} metric={filters.metric}
+                <XStanceScore allPredictions={allPredictions} metric={filters.metric}
                               onSelectLang={(lang) => changeFilter({...filters, lang: lang})}
                               scores={scores}/>}
                 {false && <><Typography variant={"h6"}
