@@ -22,12 +22,12 @@ import {
 } from "@material-ui/core";
 import {Line} from "react-chartjs-2";
 import {PredictionUtils} from "../src/utils/PredictionUtils";
-import {Figures} from "../src/models/Figures";
-import {Summary} from "../src/models/Summary";
-import {Prediction} from "../src/models/Prediction";
+import {Figures} from "../src/models/internal/Figures";
+import {Summary} from "../src/models/internal/Summary";
+import {Prediction} from "../src/models/results/Prediction";
 import Head from "next/head";
 import ReactWordCloud from "react-wordcloud";
-import {TableDataProps} from "../src/models/TableDataProps";
+import {TableDataProps} from "../src/models/internal/TableDataProps";
 import {XSTanceResultTable} from "../src/components/XStanceResultTable";
 import {XStanceScore} from "../src/components/XStanceScores";
 import {XStanceQuestion} from "../src/components/XStanceQuestion";
@@ -36,7 +36,7 @@ import {XStanceModelSelection} from "../src/components/XStanceModelSelection";
 import {ModelType} from "../src/models/ModelType";
 import {Metric} from "../src/models/Metric";
 import CountUp from "react-countup";
-import {ModelSummary} from "../src/models/ModelSummary";
+import {ModelSummary} from "../src/models/results/ModelSummary";
 import {XStanceConfusionMatrix} from "../src/components/XStanceConfusionMatrix";
 
 // const HeatMap = require("react-heatmap-grid").default;

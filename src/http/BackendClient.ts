@@ -1,9 +1,9 @@
 import getConfig from "next/config";
 import axios from 'axios';
-import {ModelSummary} from "../models/ModelSummary";
+import {ModelSummary} from "../models/results/ModelSummary";
 import {ModelType} from "../models/ModelType";
-import {Evaluation} from "../models/Evaluation";
-import {Prediction} from "../models/Prediction";
+import {Evaluation} from "../models/evaluation/Evaluation";
+import {Prediction} from "../models/results/Prediction";
 
 // TODO: add URL to config for prediction URL. Could also fetch results from there
 const {serverRuntimeConfig, publicRuntimeConfig} = getConfig();

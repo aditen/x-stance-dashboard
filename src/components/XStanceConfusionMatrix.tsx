@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Prediction} from "../models/Prediction";
+import {Prediction} from "../models/results/Prediction";
 import {Typography} from "@material-ui/core";
 import CountUp from "react-countup";
 

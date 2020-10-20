@@ -1,4 +1,4 @@
-import {Metric} from "./Metric";
+import {Metric} from "../Metric";
 
 export interface TableDataProps {
     lang: 'all' | 'de' | 'fr' | 'it';

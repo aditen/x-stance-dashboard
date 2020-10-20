@@ -1,7 +1,7 @@
 import * as React from "react";
 import {Box, FormControl, InputLabel, MenuItem, Select} from "@material-ui/core";
-import {TableDataProps} from "../models/TableDataProps";
-import {Summary} from "../models/Summary";
+import {TableDataProps} from "../models/internal/TableDataProps";
+import {Summary} from "../models/internal/Summary";
 
 type Props = {
     filters: TableDataProps,

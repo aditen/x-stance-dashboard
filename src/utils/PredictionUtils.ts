@@ -1,6 +1,6 @@
-import {Figures} from "../models/Figures";
-import {Prediction} from "../models/Prediction";
-import {Summary} from "../models/Summary";
+import {Figures} from "../models/internal/Figures";
+import {Prediction} from "../models/results/Prediction";
+import {Summary} from "../models/internal/Summary";
 import {MinMaxPair} from "react-wordcloud";
 import {Metric} from "../models/Metric";
 

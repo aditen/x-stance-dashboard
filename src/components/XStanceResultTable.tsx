@@ -11,8 +11,8 @@ import {
     TablePagination,
     TableRow
 } from "@material-ui/core";
-import {TableDataProps} from "../models/TableDataProps";
-import {Summary} from "../models/Summary";
+import {TableDataProps} from "../models/internal/TableDataProps";
+import {Summary} from "../models/internal/Summary";
 import {Metric} from "../models/Metric";
 import {PredictionUtils} from "../utils/PredictionUtils";
 

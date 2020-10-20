@@ -1,10 +1,10 @@
 import * as React from "react";
 import {Grid, Icon, LinearProgress, Typography} from "@material-ui/core";
 import dynamic from "next/dist/next-server/lib/dynamic";
-import {Figures} from "../models/Figures";
+import {Figures} from "../models/internal/Figures";
 import {Metric} from "../models/Metric";
 import {PredictionUtils} from "../utils/PredictionUtils";
-import {Prediction} from "../models/Prediction";
+import {Prediction} from "../models/results/Prediction";
 // @ts-ignore
 const ReactCountryFlag: any = dynamic(() => import('react-country-flag'), {ssr: false});
 

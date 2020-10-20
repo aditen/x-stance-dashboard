@@ -22,12 +22,12 @@ import {
     Typography
 } from "@material-ui/core";
 import {PredictionUtils} from "../utils/PredictionUtils";
-import {Summary} from "../models/Summary";
-import {Prediction} from "../models/Prediction";
+import {Summary} from "../models/internal/Summary";
+import {Prediction} from "../models/results/Prediction";
 import {ModelType} from "../models/ModelType";
 import IconButton from "@material-ui/core/IconButton";
 import BackendClient from "../http/BackendClient";
-import {Evaluation} from "../models/Evaluation";
+import {Evaluation} from "../models/evaluation/Evaluation";
 import Pagination from '@material-ui/lab/Pagination';
 
 type Props = {
