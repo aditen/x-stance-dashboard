@@ -4,6 +4,17 @@ This is the repository of the X-Stance Dashboard as described in my bachelor the
 It is implemented with Next.JS (in case you need routing and other stuff) on top of ReactJS.
 It is hosted on a NodeJS Express Server and has a path /files where static files (our predictions) are served
 
+# External interfaces:
+The dashboard has two external interfaces: 
+* The first is fetching of a JSON results file per model, containing
+it's training information (duration, losses and id) as well as the predictions it did on the test set.
+This is achieved using a standardized JSON format that is written in the Python code to it's .results folder.
+The location of this folder (you can also download the folder as a .zip) **must then be set as FILE_DIR variable**
+as the GUI creates a static file server on the corresponding location and loads it from there via REST call.
+
+* The second, real-live evaluation is again done via a REST call, but needs setup of an additional service: 
+The python flask web_app. It also fetches a standardized model via REST, but from a different origin (CORS)
+
 # Structure
 This is a standard NextJS project. It only contains one route (the root, respectively /stance).
 This is where the dashboard is located. All other paths return the default 404 screen of NextJS.
@@ -39,3 +50,15 @@ Otherwise it is structured as follows:
     * utils: PredictionUtils that contain mapping and data formatting functionality
 * server.js: Entry script for node: Starts express server that serves static files on /files 
 and nextjs application on all other paths
+
+# Running
+**Before running, you need to set the environment variable FILE_DIR** to a valid path from where to serve the /files directory 
+(where result JSON files are located as described in external interfaces section)
+
+First, you need Node 10.14 and a corresponding NPM version.
+Then, run ``npm install`` to install the required packages.
+
+In case you do not want to build (because being a dev), run ``npm run dev`` locally.
+
+In case you build it, run ``npm run build`` followed by ``npm run start`` or ``npm run start_windows`` 
+depending on the platform. 
