@@ -12,11 +12,11 @@ export const XStanceConfusionMatrix: React.FC<Props> = (props: Props) => {
             <div style={{
                 display: "inline-block",
                 backgroundColor: "green",
-                width: "min(200px, 30vw)",
-                height: "min(200px, 30vw)",
+                width: "125px",
+                height: "125px",
                 textAlign: "center",
                 verticalAlign: "middle",
-                lineHeight: "min(200px, 30vw)"
+                lineHeight: "125px"
             }}><Typography component={"span"}
                            variant={"h5"}>TP: <CountUp start={0}
                                                        end={props.entriesToDisplay.filter(value => value.predicted === "FAVOR" && value.label === "FAVOR").length}
@@ -25,11 +25,11 @@ export const XStanceConfusionMatrix: React.FC<Props> = (props: Props) => {
             <div style={{
                 display: "inline-block",
                 backgroundColor: "red",
-                width: "min(200px, 30vw)",
-                height: "min(200px, 30vw)",
+                width: "125px",
+                height: "125px",
                 textAlign: "center",
                 verticalAlign: "middle",
-                lineHeight: "min(200px, 30vw)"
+                lineHeight: "125px"
             }}><Typography component={"span"}
                            variant={"h5"}>FN: <CountUp start={0}
                                                        delay={2}
@@ -41,11 +41,11 @@ export const XStanceConfusionMatrix: React.FC<Props> = (props: Props) => {
             <div style={{
                 display: "inline-block",
                 backgroundColor: "red",
-                width: "min(200px, 30vw)",
-                height: "min(200px, 30vw)",
+                width: "125px",
+                height: "125px",
                 textAlign: "center",
                 verticalAlign: "middle",
-                lineHeight: "min(200px, 30vw)"
+                lineHeight: "125px"
             }}><Typography component={"span"}
                            variant={"h5"}>FP: <CountUp start={0}
                                                        delay={4}
@@ -55,11 +55,11 @@ export const XStanceConfusionMatrix: React.FC<Props> = (props: Props) => {
             <div style={{
                 display: "inline-block",
                 backgroundColor: "green",
-                width: "min(200px, 30vw)",
-                height: "min(200px, 30vw)",
+                width: "125px",
+                height: "125px",
                 textAlign: "center",
                 verticalAlign: "middle",
-                lineHeight: "min(200px, 30vw)"
+                lineHeight: "125px"
             }}><Typography component={"span"}
                            variant={"h5"}>TN: <CountUp start={0}
                                                        delay={6}
