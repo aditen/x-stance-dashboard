@@ -198,18 +198,6 @@ const StancePage: React.FC = () => {
                 <XStanceScore allPredictions={allPredictions} metric={filters.metric}
                               onSelectLang={(lang) => changeFilter({...filters, lang: lang})}
                               scores={scores}/>}
-                {false && <><Typography variant={"h6"}
-                                        align={"center"}>
-                    new_questions_defr: {PredictionUtils.getFigures(allPredictions.filter(value => value.testSet === "new_questions_defr")).f1Score}
-                </Typography>
-                    <Typography variant={"h6"}
-                                align={"center"}>
-                        new_comments_defr: {PredictionUtils.getFigures(allPredictions.filter(value => value.testSet === "new_comments_defr")).f1Score}
-                    </Typography>
-                    <Typography variant={"h6"}
-                                align={"center"}>
-                        new_topics_defr: {PredictionUtils.getFigures(allPredictions.filter(value => value.testSet === "new_topics_defr")).f1Score}
-                    </Typography></>}
                 {progress === "finished" &&
                 <XStanceFilters filters={filters} changeFilter={changeFilter} availableTopics={availableTopics}/>}
                 {progress === 'finished' &&
