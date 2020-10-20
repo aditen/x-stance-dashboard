@@ -42,7 +42,6 @@ export const XStanceQuestion: React.FC<Props> = (props: Props) => {
     const [customQuestion, setCustomQuestion] = useState<Prediction | undefined>(undefined);
     const [responseStatus, setResponseStatus] = useState<ResultState>("initialized");
     const [evaluation, setEvaluation] = useState<Evaluation | undefined>(undefined);
-    const [showAttentionWeight, setShowAttentionWeight] = useState<boolean>(false);
     const [page, setPage] = useState<number>(1);
 
     const fetchPrediction = async () => {
@@ -79,11 +78,7 @@ export const XStanceQuestion: React.FC<Props> = (props: Props) => {
         return <>
             <Typography align={"center"} component={"div"}
                         style={{marginTop: 20, marginBottom: 5}}>{child}</Typography>
-            {(type === "favor" || type === "against") && <Typography align={"center"} component={"div"}>
-                <IconButton
-                    onClick={() => setShowAttentionWeight(true)}><Icon
-                    fontSize={"inherit"}>dashboard</Icon></IconButton>
-            </Typography>}</>;
+        </>;
     };
 
     const getAttentionMatrix = (evaluation: Evaluation | undefined, pageNumber: number) => {
@@ -125,11 +120,19 @@ export const XStanceQuestion: React.FC<Props> = (props: Props) => {
     }, [customQuestion]);
     return (<>
         {customQuestion &&
-        <Dialog maxWidth={"sm"} open={!!customQuestion}
+        <Dialog maxWidth={"md"} fullWidth={true} open={!!customQuestion}
                 onClose={() => setCustomQuestion(undefined)}>
-            <DialogTitle>{customQuestion.question}</DialogTitle>
+            <DialogTitle>Evaluation</DialogTitle>
             <DialogContent>
                 <form noValidate autoComplete="off">
+                    <TextField
+                        fullWidth={true}
+                        multiline
+                        label={"Question"}
+                        value={customQuestion.question}
+                        onChange={(e) => setCustomQuestion({...customQuestion, question: e.target.value})}
+                        style={{marginBottom: 20}}
+                    />
                     <TextField
                         fullWidth={true}
                         multiline
@@ -140,24 +143,29 @@ export const XStanceQuestion: React.FC<Props> = (props: Props) => {
                 </form>
                 {getResultVis(responseStatus)}
                 <div>{!!evaluation &&
-                <ExpansionPanel><ExpansionPanelSummary><Typography>Tokens</Typography></ExpansionPanelSummary>
+                <ExpansionPanel><ExpansionPanelSummary><Icon
+                    fontSize={"inherit"}
+                    style={{marginRight: 5}}>text_format</Icon><Typography>Tokens</Typography></ExpansionPanelSummary>
                     <ExpansionPanelDetails style={{display: "block"}}>
                         {evaluation.tokens.map((token, i) => <Chip
                             style={{margin: 2}} label={token}
                             key={"chip-" + i}/>)}
                     </ExpansionPanelDetails>
                 </ExpansionPanel>}</div>
-            </DialogContent>
-        </Dialog>}
-        {(showAttentionWeight && !!evaluation) &&
-        <Dialog maxWidth={"md"} fullWidth={true} open={showAttentionWeight}
-                onClose={() => setShowAttentionWeight(false)}>
-            <DialogTitle>Attention Weights</DialogTitle>
-            <DialogContent>
-                {getAttentionMatrix(evaluation, page)}
-                <Pagination color={"primary"} shape={"rounded"} variant={"outlined"} style={{marginTop: 25}} page={page}
-                            count={Math.ceil(evaluation.tokens.indexOf("<pad>") == -1 ? 128 : evaluation.tokens.indexOf("<pad>") / 20)}
-                            onChange={(e, newPage) => setPage(newPage)}/>
+                <div>{(!!evaluation && !!evaluation.attnWeights && !!evaluation.attnWeights.length) &&
+                <ExpansionPanel
+                    TransitionProps={{unmountOnExit: true}}><ExpansionPanelSummary><Typography><Icon
+                    fontSize={"inherit"} style={{marginRight: 5}}>dashboard</Icon>
+                    Attention
+                    Weights</Typography></ExpansionPanelSummary>
+                    <ExpansionPanelDetails style={{display: "block"}}>
+                        {getAttentionMatrix(evaluation, page)}
+                        <Pagination color={"primary"} shape={"rounded"} variant={"outlined"} style={{marginTop: 25}}
+                                    page={page}
+                                    count={Math.ceil(evaluation.tokens.indexOf("<pad>") == -1 ? 128 : evaluation.tokens.indexOf("<pad>") / 20)}
+                                    onChange={(e, newPage) => setPage(newPage)}/>
+                    </ExpansionPanelDetails>
+                </ExpansionPanel>}</div>
             </DialogContent>
         </Dialog>}
         <DialogTitle>{props.openQuestion.question}</DialogTitle>
