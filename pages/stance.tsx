@@ -39,8 +39,6 @@ import CountUp from "react-countup";
 import {ModelSummary} from "../src/models/results/ModelSummary";
 import {XStanceConfusionMatrix} from "../src/components/XStanceConfusionMatrix";
 
-// const HeatMap = require("react-heatmap-grid").default;
-
 type ProgressType = 'loading' | 'computing_figures' | 'building_indices' | 'finished' | 'error';
 
 const nGramMap = new Map<ModelType, number>();
@@ -60,16 +58,16 @@ nGramMap.set("bow_fasttext", 1);
 
 const StancePage: React.FC = () => {
 
-    const [modelType, setModelType] = useState<ModelType>("bertrand_small");
+    const [modelType, setModelType] = useState<ModelType>("bow_own_tiny");
     const [progress, setProgress] = useState<ProgressType>('loading');
     const [scores, setScores] = useState<Figures>();
     const [allEntries, setAllEntries] = useState<Summary[]>([]);
     const [allPredictions, setAllPredictions] = useState<Prediction[]>([]);
     const [filteredEntries, setFilteredEntries] = useState<Summary[]>([]);
+    const [filteredPredictions, setFilteredPredictions] = useState<Prediction[]>([]);
     const [entriesToDisplay, setEntriesToDisplay] = useState<Summary[]>([]);
     const [openQuestion, setOpenQuestion] = useState<Summary | undefined>();
     const [page, setPage] = useState<number>(0);
-    const [figuresPerLang, setFiguresPerLang] = useState<any>({});
     const [filters, setFilters] = useState<TableDataProps>({
         order: "desc",
         lang: 'all',
@@ -105,7 +103,6 @@ const StancePage: React.FC = () => {
             const figures = PredictionUtils.getFigures(summary.predictions);
             setScores(figures);
             setProgress("building_indices");
-            setFiguresPerLang(PredictionUtils.figuresByLang(summary.predictions));
             setModelSummary(summary);
             changeFilter(filters, summaries);
             setProgress("finished");
@@ -154,6 +151,8 @@ const StancePage: React.FC = () => {
         setAvailableTopics(topics);
         setPage(0);
         setFilteredEntries(newEntries);
+        const isTopicSet = !!newProps.topic && newProps.topic !== '--none--';
+        setFilteredPredictions(allPredictions.filter(value => ((!isLangSet || value.language === newProps.lang) && (!isTopicSet || value.topic === newProps.topic))));
         setEntriesToDisplay(newEntries.slice(0, 20));
         setFilters(newProps);
     };
@@ -247,9 +246,9 @@ const StancePage: React.FC = () => {
             {showConfusionMatrix &&
             <Dialog maxWidth={"md"} open={showConfusionMatrix}
                     onClose={() => setShowConfusionMatrix(false)}>
-                <DialogTitle>Confusion Matrix of Model</DialogTitle>
+                <DialogTitle>Confusion Matrix</DialogTitle>
                 <DialogContent>
-                    <XStanceConfusionMatrix entriesToDisplay={allPredictions}/>
+                    <XStanceConfusionMatrix entriesToDisplay={filteredPredictions}/>
                 </DialogContent>
             </Dialog>}
 

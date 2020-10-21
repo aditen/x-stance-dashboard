@@ -39,6 +39,8 @@ export const XStanceScore: React.FC<Props> = (props: Props) => {
                       fontSize={"inherit"}>search</Icon>{PredictionUtils.getCurrentScore(PredictionUtils.getFigures(props.allPredictions.filter(value => value.testSet === "new_questions_defr" || value.testSet === "new_questions_it")), props.metric)}
                 <Icon title={"New Comments"} style={{marginLeft: 5}}
                       fontSize={"inherit"}>question_answer</Icon> {PredictionUtils.getCurrentScore(PredictionUtils.getFigures(props.allPredictions.filter(value => value.testSet === "new_comments_defr" || value.testSet === "new_comments_it")), props.metric)}
+                <Icon title={"Supervised"} style={{marginLeft: 5}}
+                      fontSize={"inherit"}>supervisor_account</Icon> {PredictionUtils.getHarmonicMean(PredictionUtils.getFigures(props.allPredictions.filter(value => value.testSet === "new_comments_defr" && value.language === "de")), PredictionUtils.getFigures(props.allPredictions.filter(value => value.testSet === "new_comments_defr" && value.language === "fr")), props.metric)}
             </Typography>
             <LinearProgress title={props.metric === "accuracy" ? "Accuracy" : "F1 Score"}
                             style={{height: 20, marginBottom: 20}} variant={"determinate"}

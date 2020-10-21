@@ -164,9 +164,14 @@ export class PredictionUtils {
 
     static getCurrentScore = (s: Figures, metric: Metric): string => {
         if (metric === "accuracy") {
-            return (s.precision * 100).toFixed(2) + "%";
+            return (s.precision * 100).toFixed(1) + "%";
         } else {
-            return (s.f1Score * 100).toFixed(2) + "%";
+            return (s.f1Score * 100).toFixed(1) + "%";
         }
     };
+
+    static getHarmonicMean = (figures1: Figures, figures2: Figures, metric: Metric): string => {
+        const harmonicMean = 2 / (1 / (metric === "f1" ? figures1.f1Score : figures1.precision) + 1 / (metric === "f1" ? figures2.f1Score : figures2.precision));
+        return (100 * harmonicMean).toFixed(1) + "%";
+    }
 }

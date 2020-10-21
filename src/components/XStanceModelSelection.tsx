@@ -27,7 +27,6 @@ export const XStanceModelSelection: React.FC<Props> = (props: Props) => {
                 <MenuItem value={"bow_bpemb_s"}>BPEmb (S) + SVM</MenuItem>
                 <MenuItem value={"bow_bpemb_m"}>BPEmb (M) + SVM</MenuItem>
                 <MenuItem value={"bow_fasttext"}>Fasttext aligned + SVM</MenuItem>
-                <MenuItem value={"fasttext_library"}>Fasttext library</MenuItem>
                 <MenuItem value={"custom_transformer_small"}>Self-Attention (S)</MenuItem>
                 <MenuItem value={"custom_transformer_medium"}>Self-Attention (M)</MenuItem>
                 <MenuItem value={"custom_transformer_large"}>Self-Attention (L)</MenuItem>
@@ -37,8 +36,8 @@ export const XStanceModelSelection: React.FC<Props> = (props: Props) => {
                 <MenuItem value={"bertolt_large"}>BERTolt (L)</MenuItem>
                 <MenuItem value={"bertrand_small"}>BERTrand (S)</MenuItem>
                 <MenuItem value={"bertrand_large"}>BERTrand (L)</MenuItem>
-                <MenuItem value={"mbert"}>M-BERT</MenuItem>
-
+                <MenuItem value={"fasttext_library"}>Baseline: Fasttext library</MenuItem>
+                <MenuItem value={"mbert"}>Baseline: M-BERT</MenuItem>
             </Select>
         </FormControl>
     );
