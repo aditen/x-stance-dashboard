@@ -17,6 +17,6 @@ export default class BackendClient {
 
     public static fetchPrediction = (modelType: ModelType, pred: Prediction) => {
         const suffix: string = modelType === "bow_own_tiny" ? "predict_bow" : "predict_attention";
-        return axios.post<Evaluation>("http://localhost:5000/" + suffix, pred)
+        return axios.post<Evaluation>(publicRuntimeConfig.evaluationUrl + suffix, pred)
     }
 }

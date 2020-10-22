@@ -14,6 +14,7 @@ module.exports = withOffline(withCSS(withImages(withTM({
     },
     publicRuntimeConfig: {
         // Will be available on both server and client
+        evaluationUrl: process.env.EVALUATION_URL || "https://x-stance-eval.iten.engineering/"
     },
     poweredByHeader: false
 }))));

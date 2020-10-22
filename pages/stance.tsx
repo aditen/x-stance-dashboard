@@ -238,6 +238,22 @@ const StancePage: React.FC = () => {
                                     data: modelSummary.validationLossHistory
                                 }
                             ]
+                        }} options={{
+                            scales: {
+                                yAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        fontSize: 15,
+                                        labelString: 'Loss'
+                                    }
+                                }], xAxes: [{
+                                    scaleLabel: {
+                                        display: true,
+                                        fontSize: 15,
+                                        labelString: 'Epoch'
+                                    }
+                                }]
+                            }
                         }}/>
                     </div>
                 </DialogContent>
