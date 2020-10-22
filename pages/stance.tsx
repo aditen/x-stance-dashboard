@@ -264,7 +264,8 @@ const StancePage: React.FC = () => {
                     onClose={() => setShowConfusionMatrix(false)}>
                 <DialogTitle>Confusion Matrix</DialogTitle>
                 <DialogContent>
-                    <XStanceConfusionMatrix entriesToDisplay={filteredPredictions}/>
+                    <XStanceConfusionMatrix
+                        entriesToDisplay={!!filteredPredictions.length ? filteredPredictions : allPredictions}/>
                 </DialogContent>
             </Dialog>}
 
