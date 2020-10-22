@@ -63,4 +63,5 @@ In case you do not want to build (because being a dev), run ``npm run dev`` loca
 In case you build it, run ``npm run build`` followed by ``npm run start`` or ``npm run start_windows`` 
 depending on the platform. 
 
-The link of the evaluation backend can be overridden by setting the environment variable ``EVALUATION_URL`` to the desired value.
+The link of the evaluation backend can be overridden by setting the environment variable ``EVALUATION_URL`` to the desired value 
+(remember to include the last / in the url).

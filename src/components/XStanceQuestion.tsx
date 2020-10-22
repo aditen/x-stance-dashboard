@@ -43,6 +43,7 @@ export const XStanceQuestion: React.FC<Props> = (props: Props) => {
     const [responseStatus, setResponseStatus] = useState<ResultState>("initialized");
     const [evaluation, setEvaluation] = useState<Evaluation | undefined>(undefined);
     const [page, setPage] = useState<number>(1);
+    const [encoderLayer, setEncoderLayer] = useState<number>(1);
 
     const fetchPrediction = async () => {
         if (!!customQuestion && !!customQuestion.comment) {
@@ -57,6 +58,7 @@ export const XStanceQuestion: React.FC<Props> = (props: Props) => {
                 }
                 setEvaluation(res.data);
             } catch (e) {
+                console.error(e);
                 setResponseStatus("error");
                 setEvaluation(undefined);
             }
@@ -81,18 +83,18 @@ export const XStanceQuestion: React.FC<Props> = (props: Props) => {
         </>;
     };
 
-    const getAttentionMatrix = (evaluation: Evaluation | undefined, pageNumber: number) => {
+    const getAttentionMatrix = (evaluation: Evaluation | undefined, layer: number, pageNumber: number) => {
         if (!evaluation || !evaluation.attnWeights || !evaluation.attnWeights.length) {
             return undefined;
         } else {
-            const firstLayerWeights: number[][] = evaluation.attnWeights[1];
+            const layerWeights: number[][] = evaluation.attnWeights[layer - 1];
             const scalingFactor = evaluation.attnWeights[0].length / 20;
             let until = evaluation.tokens.indexOf("<pad>");
             if (until == -1) {
                 until = evaluation.tokens.length;
             }
             return <Box whiteSpace={"nowrap"}>
-                {firstLayerWeights.slice((pageNumber - 1) * 20, Math.min(pageNumber * 20, until)).map((val, i) => <Box
+                {layerWeights.slice((pageNumber - 1) * 20, Math.min(pageNumber * 20, until)).map((val, i) => <Box
                     height={10}
                     key={"attn-row-" + i}>
                     <Typography component={"div"} variant={"caption"}
@@ -114,7 +116,7 @@ export const XStanceQuestion: React.FC<Props> = (props: Props) => {
     };
 
     useEffect(() => {
-        if (responseStatus !== "error" && (props.modelType === "bow_own_tiny" || props.modelType === "bertrand_small")) {
+        if (responseStatus !== "error" && (props.modelType === "bow_own_tiny" || props.modelType === "bertolt_small")) {
             fetchPrediction().catch(console.error);
         }
     }, [customQuestion]);
@@ -159,11 +161,15 @@ export const XStanceQuestion: React.FC<Props> = (props: Props) => {
                     Attention
                     Weights</Typography></ExpansionPanelSummary>
                     <ExpansionPanelDetails style={{display: "block"}}>
-                        {getAttentionMatrix(evaluation, page)}
-                        <Pagination color={"primary"} shape={"rounded"} variant={"outlined"} style={{marginTop: 25}}
+                        {getAttentionMatrix(evaluation, encoderLayer, page)}
+                        <Pagination color={"primary"} shape={"round"} variant={"outlined"} style={{marginTop: 25}}
                                     page={page}
                                     count={Math.ceil(evaluation.tokens.indexOf("<pad>") == -1 ? 128 : evaluation.tokens.indexOf("<pad>") / 20)}
                                     onChange={(e, newPage) => setPage(newPage)}/>
+                        <Pagination color={"primary"} shape={"round"} variant={"outlined"} style={{marginTop: 25}}
+                                    page={encoderLayer}
+                                    count={evaluation.attnWeights.length}
+                                    onChange={(e, newLayer) => setEncoderLayer(newLayer)}/>
                     </ExpansionPanelDetails>
                 </ExpansionPanel>}</div>
             </DialogContent>
@@ -184,12 +190,12 @@ export const XStanceQuestion: React.FC<Props> = (props: Props) => {
                             <TableCell component="th" scope="row">
                                 {row.comment}
                             </TableCell>
-                            {(props.modelType !== "bow_own_tiny" && props.modelType !== "bertrand_small") &&
+                            {(props.modelType !== "bow_own_tiny" && props.modelType !== "bertolt_small") &&
                             <TableCell
                                 align="right"><Icon
                                 color={row.label !== row.predicted ? "error" : "inherit"}>{row.predicted === "FAVOR" ? "thumb_up" : "thumb_down"}</Icon>
                             </TableCell>}
-                            {(props.modelType === "bow_own_tiny" || props.modelType === "bertrand_small") &&
+                            {(props.modelType === "bow_own_tiny" || props.modelType === "bertolt_small") &&
                             <TableCell
                                 align="right"><IconButton onClick={() => setCustomQuestion(row)}><Icon
                                 color={row.label !== row.predicted ? "error" : "inherit"}>{row.predicted === "FAVOR" ? "thumb_up" : "thumb_down"}</Icon></IconButton>
