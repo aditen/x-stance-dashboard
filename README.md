@@ -65,3 +65,5 @@ depending on the platform.
 
 The link of the evaluation backend can be overridden by setting the environment variable ``EVALUATION_URL`` to the desired value 
 (remember to include the last / in the url).
+
+The X-Stance dashboard is also deployed on https://x-stance.iten.engineering/
