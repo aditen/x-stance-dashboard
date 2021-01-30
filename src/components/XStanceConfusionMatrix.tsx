@@ -8,7 +8,7 @@ type Props = {
 }
 export const XStanceConfusionMatrix: React.FC<Props> = (props: Props) => {
     return (<>
-        <div>
+        <div style={{whiteSpace: "nowrap"}}>
             <div style={{
                 display: "inline-block",
                 backgroundColor: "green",
@@ -37,7 +37,7 @@ export const XStanceConfusionMatrix: React.FC<Props> = (props: Props) => {
                                                        duration={2}/></Typography>
             </div>
         </div>
-        <div>
+        <div style={{whiteSpace: "nowrap"}}>
             <div style={{
                 display: "inline-block",
                 backgroundColor: "red",
